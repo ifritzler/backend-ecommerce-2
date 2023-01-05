@@ -1,0 +1,56 @@
+<nav class="sticky top-0 z-50 border-b-2 w-full bg-slate-50 transition-all">
+  <div class="flex flex-row justify-between ">
+    <ul class="flex flex-row items-center sm:py-1 md:py-3 sm:px-3 md:px-6 gap-4 text-gray-600">
+      <li>
+        <h1 class="text-2xl font-semibold text-black">Lookte</h1>
+      </li>
+      <li>
+        <a href="/" class="text-sm hover:text-black transition-all">
+          Home
+        </a>
+      </li>
+      <li>
+        <a href="/categories" class="text-sm hover:text-black transition-all">
+          Categories
+        </a>
+      </li>
+      <li>
+        <a href="/me/orders" class="text-sm hover:text-black transition-all">
+          My Orders
+        </a>
+      </li>
+    </ul>
+    <ul class="flex flex-row items-center sm:py-1 md:py-3 sm:px-3 md:px-6 gap-4 text-gray-600">
+      <li class="flex flex-row gap-1 cursor-pointer text-sm hover:text-black ">
+        <a href="/nuevo-producto">Nuevo producto</a>
+      </li>
+      <li class="flex flex-row gap-1 cursor-pointer text-sm hover:text-black ">
+        <p>Registrate</p>
+      </li>
+      <li class="flex flex-row gap-1 cursor-pointer text-sm hover:text-black">
+        <div class="text-gray-600">
+          <%- include('../icons/user-login.ejs') %>
+        </div>
+        <p>Login</p>
+      </li>
+      <li class="flex flex-row gap-1 cursor-pointer text-sm hover:text-black">
+        <div class="text-blue-400">
+          <%- include('../icons/chat.ejs') %>
+        </div>
+        <p>Chat comunitario</p>
+      </li>
+      <li class="hidden flex-row gap-1 cursor-pointer text-sm hover:text-black">
+        <div class="text-gray-600">
+          <%- include('../icons/user-logout.ejs') %>
+        </div>
+        <p>Logout</p>
+      </li>
+      <li class="flex flex-row gap-1 cursor-pointer text-sm hover:text-black">
+        <div class="text-red-400">
+          <%- include('../icons/basket.ejs') %>
+        </div>
+        <p>Carrito</p>
+      </li>
+    </ul>
+  </div>
+</nav>

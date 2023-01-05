@@ -1,0 +1,146 @@
+<div
+  class="grid gap-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full gap-y-8 place-items-baseline place-content-around">
+  <% if (products) { %>
+    <% products.forEach(product=> { %>
+      <div class="w-60 flex flex-col gap-1">
+        <header class="relative">
+          <div class="absolute z-10 right-0 p-2 cursor-pointer text-black flex flex-col">
+            <div class="favourite p-1 grid place-content-center hover:bg-slate-300 transition-all rounded-md"
+              onclick="addFavourite(this)" data-id="<%-product.id%>">
+              <%- include('../icons/heart.ejs') %>
+            </div>
+            <% if (product.stock> 0) { %>
+              <div class="add-product-button p-1 grid place-content-center hover:bg-slate-300 transition-all rounded-md"
+                onclick="addProduct(this)" data-id="<%-product.id%>" data-state=0>
+                <%- include('../icons/add.ejs') %>
+              </div>
+              <div class="add-product-controls hidden opacity-0 flex-col justify-center transition-all">
+                <div class="p-1 grid place-content-center hover:bg-slate-300 transition-all rounded-md" onclick="addCount(this)">
+                  <%- include('../icons/arrow-up.ejs') %>
+                </div>
+                <div class="counter p-1 grid place-content-center bg-white transition-all rounded-md" data-value=0 data-limit=<%- product.stock %> >
+                  0
+                </div>
+                <div class="p-1 grid place-content-center hover:bg-slate-300 transition-all rounded-md" onclick="restCount(this)">
+                  <%- include('../icons/arrow-down.ejs') %>
+                </div>
+              </div>
+            <% } %>
+          </div>
+          <a href="#" class="product-image relative">
+            <img src="<%- product.imgUrl %>" alt="<%- product.title %>">
+            <div class="transition-all photo-backdrop absolute bg-green-600 inset-0 opacity-0"></div>
+          </a>
+          <% if (product.stock === 0) { %>
+            <div class="absolute top-3/4 w-full opacity-90 text-white text-sm grid place-items-center h-8 bg-red-600">
+              <p>Agotado</p>
+            </div>
+          <% } %>
+          <% if (product.stock === 1) { %>
+            <div
+              class="absolute top-3/4 w-full opacity-90 text-white text-sm grid place-items-center h-8 bg-yellow-600">
+              <p>Ultima unidad!</p>
+            </div>
+          <% } %>
+          
+        </header>
+        <footer>
+          <div class="flex flex-col gap-2">
+            <a href="#">
+              <p class="text-yellow-800 text-sm"><%- product.title %> </p>
+            </a>
+            <p class="text-red-900 text-xs font-bold">$<%- product.price %> </p>
+          </div>
+        </footer>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+
+<script>
+
+  function addProduct(element){
+    const addButton = element
+    const productId = element.dataset.id
+    const control = element.nextElementSibling
+    const counter = control.querySelector('.counter');
+    const quantity = counter.dataset.value
+    const photoBackdropElement = element.parentElement.parentElement.querySelector('.photo-backdrop')
+
+    if(parseInt(element.dataset.state) === 0) {
+      element.dataset.state = 1
+    };
+
+    if(parseInt(element.dataset.state) === 1) {
+      if (parseInt(counter.dataset.value) !== 0){
+        counter.dataset.value = 0;
+        counter.innerHTML = 0;
+        // TODO: Lógica para cargar al carrito 
+        console.log(`Se han agregado ${quantity} productos`)
+        // addButton.classList.add('text-green-600');
+        photoBackdropElement.classList.toggle('opacity-0');
+        photoBackdropElement.classList.toggle('opacity-30');
+        photoBackdropElement.classList.toggle('z-10');
+        setTimeout(() => {
+          // addButton.classList.remove('text-green-600');
+          photoBackdropElement.classList.toggle('opacity-0');
+          photoBackdropElement.classList.toggle('opacity-30');
+          photoBackdropElement.classList.toggle('z-10');
+        }, 1500)
+        element.dataset.state = 0;
+      }
+    };
+
+    addButton.classList.toggle('-translate-x-full')
+    control.classList.toggle('-translate-y-1/3')
+    control.classList.toggle('opacity-100')
+    control.classList.toggle('hidden')
+    control.classList.toggle('flex')
+  }
+
+  function addCount(element){
+    const counter = element.nextElementSibling
+    const limit = counter.dataset.limit
+    const newValue = parseInt(counter.dataset.value) + 1
+    if(newValue <= limit){
+      counter.innerHTML = newValue;
+      counter.dataset.value = newValue;
+    }
+  }
+
+  function restCount(element){
+    const counter = element.previousElementSibling
+    const limit = counter.dataset.limit
+    const newValue = parseInt(counter.dataset.value) - 1
+    if(newValue >= 0){
+      counter.innerHTML = newValue;
+      counter.dataset.value = newValue;
+    }
+  }
+
+  function colorizeFavs() {
+    const favElements = document.querySelectorAll('.favourite');
+    let favourites = JSON.parse(localStorage.getItem('favourites'));
+    favElements.forEach(e => {
+      let id = e.dataset.id;
+      if (favourites.find(n => n === id)) {
+        e.classList.add('text-red-500');
+      }
+    })
+  }
+
+  function addFavourite(element) {
+    let favourites = JSON.parse(localStorage.getItem('favourites'));
+    if (!favourites) localStorage.setItem('favourites', "[]")
+    if (!favourites.find(favId => favId === element.dataset.id)) {
+      favourites.push(element.dataset.id)
+      element.classList.add('text-red-500');
+    } else {
+      favourites = favourites.filter(favId => favId !== element.dataset.id);
+      element.classList.remove('text-red-500');
+    }
+    localStorage.setItem('favourites', JSON.stringify(favourites));
+  }
+
+  colorizeFavs()
+</script>
