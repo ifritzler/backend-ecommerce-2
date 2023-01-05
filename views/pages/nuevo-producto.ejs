@@ -1,92 +1,115 @@
 <!DOCTYPE html>
 <html lang="es">
   <%- include('../head.ejs') %>
-  <body class="w-full min-h-screen">
+  <body class="min-h-screen w-full">
     <%- include('../components/navbar.ejs') %>
-    <main class="sm:w-full mx-auto px-16 py-6 flex flex-col gap-6">
+    <main class="mx-auto flex flex-col gap-6 px-16 py-6 sm:w-full">
       <!-- <h2 class="text-lg">Nuevo Producto</h2> -->
-      <div class="grid md:grid-cols-2 gap-4">
+      <div class="grid gap-4 md:grid-cols-2">
         <div>
-          <h2 class="text-lg mb-10">Nuevo Producto</h2>
+          <h2 class="mb-10 text-lg">Nuevo Producto</h2>
           <!-- Formulario -->
           <form class="flex flex-col gap-4">
             <label for="title" class="flex flex-col">
               Titulo
-              <input class="md:w-3/4 xs:w-full border-2 rounded-lg p-2 px-4" type="text" id="title">
+              <input
+                class="xs:w-full rounded-lg border-2 p-2 px-4 md:w-3/4"
+                type="text"
+                id="title"
+              />
             </label>
             <label for="image" class="flex flex-col">
               URL Foto de producto
-              <input class="md:w-3/4 xs:w-full border-2 rounded-lg p-2 px-4" type="text" id="image">
+              <input
+                class="xs:w-full rounded-lg border-2 p-2 px-4 md:w-3/4"
+                type="text"
+                id="image"
+              />
             </label>
             <label for="price" class="flex flex-col">
               Precio
-              <input class="md:w-3/4 xs:w-full border-2 rounded-lg p-2 px-4" type="number" id="price">
+              <input
+                class="xs:w-full rounded-lg border-2 p-2 px-4 md:w-3/4"
+                type="number"
+                id="price"
+              />
             </label>
 
-            <button type="submit" class="text-gray-900 bg-green-400 md:w-3/4 xs:w-full p-2 rounded-lg">
+            <button
+              type="submit"
+              class="xs:w-full rounded-lg bg-green-400 p-2 text-gray-900 md:w-3/4"
+            >
               Agregar producto
             </button>
           </form>
           <!-- Fin formulario -->
         </div>
         <div class="justify-center">
-          <h2 class="text-lg mb-10">Muestra producto</h2>
+          <h2 class="mb-10 text-lg">Muestra producto</h2>
           <!-- Producto -->
-          <div class="w-60 flex flex-col gap-1 mx-auto sm:mx-0">
+          <div class="mx-auto flex w-60 flex-col gap-1 sm:mx-0">
             <header class="relative">
               <a href="#" class="relative">
-                <img id="product-image" src="https://aimint.org/ap/wp-content/uploads/sites/18/2016/04/image-placeholder-vertical.jpg" alt="">
+                <img
+                  id="product-image"
+                  src="https://aimint.org/ap/wp-content/uploads/sites/18/2016/04/image-placeholder-vertical.jpg"
+                  alt=""
+                />
               </a>
             </header>
             <footer>
-              <div class="flex flex-col gap-2 ">
+              <div class="flex flex-col gap-2">
                 <a href="#">
-                  <p id="product-title" class="text-yellow-800 text-sm">Titulo de producto de ejemplo</p>
+                  <p id="product-title" class="text-sm text-yellow-800">
+                    Titulo de producto de ejemplo
+                  </p>
                 </a>
-                <p id="product-price" class="text-red-900 text-xs font-bold">$9999</p>
+                <p id="product-price" class="text-xs font-bold text-red-900">
+                  $9999
+                </p>
               </div>
             </footer>
           </div>
           <!-- Fin Producto -->
-
         </div>
       </div>
     </main>
 
     <script>
-      const titleInput = document.getElementById('title');
-      const imgUrlInput = document.getElementById('image');
-      const priceInput = document.getElementById('price');
+      const titleInput = document.getElementById("title");
+      const imgUrlInput = document.getElementById("image");
+      const priceInput = document.getElementById("price");
 
-      const title = document.getElementById('product-title');
-      const imgUrl = document.getElementById('product-image');
-      const price = document.getElementById('product-price');
+      const title = document.getElementById("product-title");
+      const imgUrl = document.getElementById("product-image");
+      const price = document.getElementById("product-price");
 
-      titleInput.addEventListener('keyup', (event) => {
-        if(event.target.value !== ""){
-          title.innerText = event.target.value
-        }else {
-          title.innerText = "Titulo de producto de ejemplo"
+      titleInput.addEventListener("keyup", (event) => {
+        if (event.target.value !== "") {
+          title.innerText = event.target.value;
+        } else {
+          title.innerText = "Titulo de producto de ejemplo";
         }
-      })
+      });
 
-      imgUrlInput.addEventListener('keyup', (event) => {
+      imgUrlInput.addEventListener("keyup", (event) => {
         console.log(event.target.value);
-        if(event.target.value !== ""){
-          imgUrl.src = event.target.value
-        }else {
-          imgUrl.src = "https://aimint.org/ap/wp-content/uploads/sites/18/2016/04/image-placeholder-vertical.jpg"
+        if (event.target.value !== "") {
+          imgUrl.src = event.target.value;
+        } else {
+          imgUrl.src =
+            "https://aimint.org/ap/wp-content/uploads/sites/18/2016/04/image-placeholder-vertical.jpg";
         }
-      })
+      });
 
-      priceInput.addEventListener('keyup', (event) => {
+      priceInput.addEventListener("keyup", (event) => {
         console.log(event.target.value);
-        if(event.target.value !== ""){
-          price.innerText = `$${event.target.value}`
-        }else {
-          price.innerText = "$9999"
+        if (event.target.value !== "") {
+          price.innerText = `$${event.target.value}`;
+        } else {
+          price.innerText = "$9999";
         }
-      })
+      });
     </script>
   </body>
 </html>
