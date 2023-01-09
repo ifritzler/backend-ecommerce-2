@@ -1,25 +1,31 @@
 import { Router } from "express";
+import HttpError from "../common/http.errors.js";
 import authService from "../services/auth.service.js";
 import userService from "../services/user.service.js";
 
 const router = Router();
 
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const logedIn = await authService.login(email, password);
-  if (!logedIn) {
-    return res.status(401).json({
-      statusCode: 401,
-      error: "email or password incorrect",
-      message: "401 Unauthorized",
-    });
-  }
+router.post("/login", async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
 
-  req.session.user = logedIn;
-  res.redirect("/");
+    const nextUrl = req.query.next || "/";
+
+    const logedIn = await authService.login(email, password);
+    if (!logedIn)
+      throw new HttpError("Credenciales incorrectas.", 401, [
+        "email",
+        "password",
+      ]);
+
+    req.session.user = logedIn;
+    res.status(301).redirect(nextUrl);
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
   try {
     const data = req.body;
     const user = await userService.create(data);
@@ -30,11 +36,7 @@ router.post("/register", async (req, res) => {
     });
   } catch (err) {
     console.log(err.message);
-    res.status(400).json({
-      statusCode: 400,
-      error: err.message,
-      message: "bad request",
-    });
+    next(err);
   }
 });
 

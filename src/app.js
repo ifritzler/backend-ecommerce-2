@@ -6,12 +6,15 @@ import { ejsConfig } from "./common/ejs.config.js";
 import routes from "./routes/index.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import errorHandler from "./middlewares/errorHandler.js";
+import morgan from "morgan";
 
 dotenv.config();
 
 const { COOKIES_SECRET, MONGO_CONNECTURI } = process.env;
 
 const app = express();
+app.use(morgan("dev", {}));
 
 const server = http.createServer(app);
 ejsConfig(app);
@@ -26,6 +29,7 @@ app.use(
       mongoUrl: MONGO_CONNECTURI,
       ttl: 60 * 10,
       stringify: true,
+      dbName: "ecommerce",
     }),
     saveUninitialized: false,
     resave: true,
@@ -42,5 +46,7 @@ app.get("/helth", (_req, res) => {
     port: process.env.PORT,
   });
 });
+
+app.use(errorHandler);
 
 export { app, server };

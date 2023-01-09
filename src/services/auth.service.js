@@ -15,10 +15,6 @@ class AuthService {
     return user;
   }
 
-  async logout() {
-    //TODO: Logica de logout
-  }
-
   async register() {
     //TODO: Logica de register
   }

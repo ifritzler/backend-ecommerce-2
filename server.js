@@ -3,7 +3,7 @@ import mongoConfig from "./src/common/mongoConfig.js";
 import mongoose from "mongoose";
 
 const { PORT = 8080, MONGO_CONNECTURI } = process.env;
-
+mongoose.set("strictQuery", true);
 mongoose
   .connect(MONGO_CONNECTURI, mongoConfig)
   .then(() => {

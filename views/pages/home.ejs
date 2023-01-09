@@ -2,8 +2,11 @@
 <html lang="es">
   <%- include('../head.ejs') %>
   <body class="min-h-screen w-full">
-    <%- include('../components/navbar.ejs')%>
+    <%- include('../components/navbar.ejs', {isAuth})%>
     <main class="mx-auto flex flex-col gap-6 px-16 py-6 sm:w-full">
+      <% if (isAuth) { %>
+      <p class="text-xl text-red-400">Bienvenido <%- isAuth.fullname %></p>
+      <% } %>
       <h2 class="text-lg">Sale</h2>
       <%- include('../layouts/product-grid.ejs', {products: products})%>
     </main>

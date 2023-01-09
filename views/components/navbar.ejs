@@ -23,10 +23,11 @@
     <ul
       class="flex flex-row items-center gap-4 text-gray-600 sm:py-1 sm:px-3 md:py-3 md:px-6"
     >
+      <% if (isAuth && isAuth.isAdmin) { %>
       <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
         <a href="/nuevo-producto">Nuevo producto</a>
       </li>
-
+      <% } %> <% if (!isAuth) { %>
       <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
         <a href="/register" class="flex flex-row">
           <p>Registrate</p>
@@ -40,6 +41,16 @@
           <p>Login</p>
         </a>
       </li>
+      <% } else { %>
+      <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
+        <a href="/logout" class="flex flex-row">
+          <div class="text-gray-600">
+            <%- include('../icons/user-logout.ejs') %>
+          </div>
+          <p>Logout</p>
+        </a>
+      </li>
+      <% }%>
       <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
         <div class="text-blue-400"><%- include('../icons/chat.ejs') %></div>
         <p>Chat comunitario</p>
