@@ -93,7 +93,6 @@
       });
 
       imgUrlInput.addEventListener("keyup", (event) => {
-        console.log(event.target.value);
         if (event.target.value !== "") {
           imgUrl.src = event.target.value;
         } else {
@@ -103,7 +102,6 @@
       });
 
       priceInput.addEventListener("keyup", (event) => {
-        console.log(event.target.value);
         if (event.target.value !== "") {
           price.innerText = `$${event.target.value}`;
         } else {

@@ -37,7 +37,7 @@ export const products = [
     imgUrl:
       "https://cdn.shopify.com/s/files/1/0292/1375/3428/products/11-08-202145419_540x.jpg?v=1631132729",
     price: 75206,
-    stock: 0,
+    stock: 10,
   },
   {
     id: 6,

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+  <%- include('../head.ejs') %>
+  <body class="min-h-screen w-full">
+    <%- include('../components/navbar.ejs')%>
+    <main
+      class="mx-auto flex w-11/12 flex-col content-center justify-center gap-6 py-6"
+    >
+      <h1 class="text-2xl">Login</h1>
+      <form
+        action="#"
+        method="post"
+        class="flex w-96 flex-col gap-4"
+        id="loginForm"
+      >
+        <label for="email" class="flex flex-col">
+          Email
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="rounded border-2 py-1 px-3"
+          />
+        </label>
+        <label for="password" class="flex flex-col">
+          Contraseña
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="rounded border-2 py-1 px-3"
+          />
+        </label>
+        <button type="submit" class="rounded-md bg-green-500 p-3 text-white">
+          Ingresar
+        </button>
+      </form>
+    </main>
+
+    <script>
+      const loginForm = document.getElementById("loginForm");
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+
+        //TODO: HACER FETCH A LOS ENDPOINT DE AUTH
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const json = await response.json();
+        console.log(json);
+      });
+    </script>
+  </body>
+</html>

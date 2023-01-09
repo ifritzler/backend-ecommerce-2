@@ -10,9 +10,9 @@
         <a href="/" class="text-sm transition-all hover:text-black"> Home </a>
       </li>
       <li>
-        <a href="/categories" class="text-sm transition-all hover:text-black">
+        <p class="cursor-pointer text-sm transition-all hover:text-black">
           Categories
-        </a>
+        </p>
       </li>
       <li>
         <a href="/me/orders" class="text-sm transition-all hover:text-black">
@@ -28,13 +28,17 @@
       </li>
 
       <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
-        <p>Registrate</p>
+        <a href="/register" class="flex flex-row">
+          <p>Registrate</p>
+        </a>
       </li>
       <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
-        <div class="text-gray-600">
-          <%- include('../icons/user-login.ejs') %>
-        </div>
-        <p>Login</p>
+        <a href="/login" class="flex flex-row">
+          <div class="text-gray-600">
+            <%- include('../icons/user-login.ejs') %>
+          </div>
+          <p>Login</p>
+        </a>
       </li>
       <li class="flex cursor-pointer flex-row gap-1 text-sm hover:text-black">
         <div class="text-blue-400"><%- include('../icons/chat.ejs') %></div>

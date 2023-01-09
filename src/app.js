@@ -1,26 +1,46 @@
 import cors from "cors";
+import dotenv from "dotenv";
 import express from "express";
 import http from "http";
 import { ejsConfig } from "./common/ejs.config.js";
 import routes from "./routes/index.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
-const { NODE_ENV = "development" } = process.env;
-if (NODE_ENV !== "development") {
-  import("dotenv/config");
-}
+dotenv.config();
+
+const { COOKIES_SECRET, MONGO_CONNECTURI } = process.env;
 
 const app = express();
+
 const server = http.createServer(app);
 ejsConfig(app);
 
 app.use(cors({ origin: ["*"] }));
 app.use(express.json());
+
+app.use(
+  session({
+    secret: COOKIES_SECRET,
+    store: MongoStore.create({
+      mongoUrl: MONGO_CONNECTURI,
+      ttl: 60 * 10,
+      stringify: true,
+    }),
+    saveUninitialized: false,
+    resave: true,
+  })
+);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(routes);
 
 app.get("/helth", (_req, res) => {
-  res.sendStatus(200);
+  res.status(200).json({
+    mongouri: process.env.MONGO_CONNECTIONURI,
+    port: process.env.PORT,
+  });
 });
 
 export { app, server };

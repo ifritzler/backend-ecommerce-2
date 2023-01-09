@@ -1,0 +1,41 @@
+version: "3.9"
+services:
+  express:
+    build: .
+    ports:
+      - "8000:3000"
+    environment:
+      PORT: 3000
+      MONGO_CONNECTIONURI: "mongodb://root:example@mongontw:27017/ecommerce"
+      REDIS_CONNECTURI: "redis://redisntw:6379/"
+    networks:
+      - redisntw
+      - mongontw
+    volumes:
+      - "./:/code"
+    depends_on:
+      - mongo
+      - redis
+
+  redis:
+    image: "redis:alpine"
+    networks:
+      - redisntw
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - mongontw
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+networks:
+  mongontw:
+  redisntw:
+
+volumes:
+  mongodb:
+  mongodb_config:
