@@ -1,4 +1,5 @@
 import UserDao from "../daos/users.dao.js";
+import UserDTO from "../dtos/user.dto.js";
 
 class UserService {
   constructor() {
@@ -16,9 +17,21 @@ class UserService {
   }
 
   async create(data) {
-    // TODO: Añadir DTO para validacion de data
-    const newUser = await this.dao.create(data);
-    return newUser;
+    const userDto = new UserDTO(data);
+    try {
+      // TODO: Añadir DTO para validacion de data
+      if (userDto.validate()) {
+        return await this.dao.create(userDto.data);
+      }
+      // Errors are here
+      return userDto;
+    } catch (err) {
+      console.log(err.code);
+      if (err.code === 11000) {
+        throw new Error("Email exists yet");
+      }
+      throw err;
+    }
   }
 
   async update(id, changes) {

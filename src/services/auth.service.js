@@ -15,9 +15,7 @@ class AuthService {
     return user;
   }
 
-  async register() {
-    //TODO: Logica de register
-  }
+  async register(registerData) {}
 }
 
 export default new AuthService();

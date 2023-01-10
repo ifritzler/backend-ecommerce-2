@@ -22,6 +22,10 @@ export const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
@@ -29,7 +33,7 @@ export const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(data.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   return next();
 });
 

@@ -2,7 +2,7 @@ import { Router } from "express";
 import HttpError from "../common/http.errors.js";
 import authService from "../services/auth.service.js";
 import userService from "../services/user.service.js";
-
+import _ from "lodash";
 const router = Router();
 
 router.post("/login", async (req, res, next) => {
@@ -29,13 +29,23 @@ router.post("/register", async (req, res, next) => {
   try {
     const data = req.body;
     const user = await userService.create(data);
+    if (!_.isEmpty(user.errors))
+      throw new HttpError("Bad request", 200, user.errors);
+
     res.status(201).json({
       user,
       statusCode: 201,
       message: "Created",
     });
   } catch (err) {
-    console.log(err.message);
+    if (err.message === "Email exists yet") {
+      next(
+        new HttpError("Email has been exists", 400, [
+          ["email", "Email has been exists"],
+        ])
+      );
+    }
+
     next(err);
   }
 });
