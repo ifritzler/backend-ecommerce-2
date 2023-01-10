@@ -27,7 +27,7 @@ app.use(
     secret: COOKIES_SECRET,
     store: MongoStore.create({
       mongoUrl: MONGO_CONNECTURI,
-      ttl: 60 * 10,
+      ttl: 60,
       stringify: true,
       dbName: "ecommerce",
     }),
