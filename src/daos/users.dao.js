@@ -1,15 +1,14 @@
-import { ContainerMongo } from "../containers/ContainerMongo.js";
-import { userCollectionName, userSchema } from "../models/user.model.js";
+const ContainerMongo = require("../containers/ContainerMongo");
+const { userCollectionName, userSchema } = require("../models/user.model");
 
 class UserDao extends ContainerMongo {
   constructor() {
     super(userCollectionName, userSchema);
   }
 
-  findByEmail(email) {
-    const user = this.model.findOne({ email: email });
-    return user;
+  async findByEmail(email) {
+    return this.model.findOne({ email });
   }
 }
 
-export default UserDao;
+module.exports = UserDao;

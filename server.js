@@ -1,18 +1,11 @@
-import { server } from "./src/app.js";
-import mongoConfig from "./src/common/mongoConfig.js";
-import mongoose from "mongoose";
+const { server } = require("./src/app");
+const logger = require("./src/common/logger");
+const { connectMongo } = require("./src/services/mongo.service");
 
-const { PORT = 8080, MONGO_CONNECTURI } = process.env;
-mongoose.set("strictQuery", true);
-mongoose
-  .connect(MONGO_CONNECTURI, mongoConfig)
-  .then(() => {
-    console.log("database is connected 🚀");
-    server.listen(PORT, () => {
-      console.log("Server listen on port " + PORT);
-    });
+const { PORT = 8080 } = process.env;
+
+connectMongo().then(
+  server.listen(PORT, () => {
+    logger.info(`Server up and running on port ${PORT}`);
   })
-  .catch((err) => {
-    console.error(err.message);
-    process.exit(-1);
-  });
+);

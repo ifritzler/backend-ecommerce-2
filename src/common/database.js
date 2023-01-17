@@ -1,4 +1,4 @@
-export const products = [
+const products = [
   {
     id: 1,
     title: "Jersey de cuello redondo de lana de cachemira",
@@ -80,3 +80,5 @@ export const products = [
     stock: 15,
   },
 ];
+
+module.exports = products;

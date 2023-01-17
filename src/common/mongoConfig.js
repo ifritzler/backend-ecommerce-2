@@ -1,7 +1,6 @@
-const DB_NAME = process.env.DB_NAME;
-export const mongoConfig = {
+const mongoConfig = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 };
 
-export default mongoConfig;
+module.exports = mongoConfig;

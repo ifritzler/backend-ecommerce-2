@@ -1,7 +1,6 @@
-import { ContainerMongo } from "../containers/ContainerMongo.js";
+const ContainerMongo = require("../containers/ContainerMongo");
 
-//TODO: modificar para traer los schemas de productos
-import { userCollectionName, userSchema } from "../models/user.model.js";
+const { userCollectionName, userSchema } = require("../models/user.model");
 
 class ProductsDao extends ContainerMongo {
   constructor() {
@@ -9,4 +8,4 @@ class ProductsDao extends ContainerMongo {
   }
 }
 
-export default ProductsDao;
+module.exports = ProductsDao;

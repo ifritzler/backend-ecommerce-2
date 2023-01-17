@@ -1,4 +1,4 @@
-import _ from "lodash";
+const _ = require("lodash");
 
 class UserDTO {
   constructor(data) {
@@ -10,22 +10,26 @@ class UserDTO {
     };
     this.errors = [];
   }
+
   validate() {
-    if (_.isEmpty(this.data.fullname))
+    if (_.isEmpty(this.data.fullname)) {
       this.errors.push(["fullname", "cannot be empty"]);
+    }
     if (_.isEmpty(this.data.email)) {
       this.errors.push(["email", "cannot be empty"]);
     }
     if (!_.includes(this.data.email, "@", 0)) {
       this.errors.push(["email", "an email must have an @ symbol"]);
     }
-    if (_.isEmpty(this.data.password))
+    if (_.isEmpty(this.data.password)) {
       this.errors.push(["password", "cannot be empty"]);
-    if (String(this.password).length < 8)
+    }
+    if (String(this.data.password).length < 8) {
       this.errors.push(["password", "cannot must be 8 characters or more"]);
+    }
 
     return _.isEmpty(this.errors);
   }
 }
 
-export default UserDTO;
+module.exports = UserDTO;

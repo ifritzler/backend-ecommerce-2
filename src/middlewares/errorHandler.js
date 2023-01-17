@@ -9,5 +9,6 @@ const errorHandler = (err, req, res, next) => {
   } else {
     res.sendStatus(400);
   }
+  next();
 };
-export default errorHandler;
+module.exports = errorHandler;

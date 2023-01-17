@@ -1,5 +1,5 @@
-import userService from "./user.service.js";
-import bcrypt from "bcrypt";
+const bcrypt = require("bcrypt");
+const userService = require("./user.service");
 
 class AuthService {
   constructor() {
@@ -7,15 +7,13 @@ class AuthService {
   }
 
   async login(email, password) {
-    const user = await userService.getById(email);
+    const user = await this.userService.getById(email);
     if (!user) return false;
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) return false;
 
     return user;
   }
-
-  async register(registerData) {}
 }
 
-export default new AuthService();
+module.exports = new AuthService();

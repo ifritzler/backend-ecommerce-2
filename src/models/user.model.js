@@ -1,9 +1,18 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
-export const userCollectionName = "User";
+const userCollectionName = "User";
 
-export const userSchema = new mongoose.Schema(
+async function isValidPassword(plainPassword) {
+  await bcrypt.compare(plainPassword, this.password, (err, matched) => matched);
+}
+
+async function hashPassword(next) {
+  this.password = await bcrypt.hash(this.password, 10);
+  return next();
+}
+
+const userSchema = new mongoose.Schema(
   {
     fullname: {
       type: String,
@@ -32,14 +41,13 @@ export const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre("save", async function (next) {
-  this.password = await bcrypt.hash(this.password, 10);
-  return next();
-});
+userSchema.pre("save", hashPassword);
+userSchema.method("isValidatePassword", isValidPassword);
 
-userSchema.method("isValidatePassword", async (plainPassword) => {
-  const validate = await bcrypt.compare(plainPassword, this.password);
-  return validate;
-});
+const userModel = mongoose.model(userCollectionName, userSchema);
 
-export const userModel = mongoose.model(userCollectionName, userSchema);
+module.exports = {
+  userSchema,
+  userModel,
+  userCollectionName,
+};

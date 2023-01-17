@@ -1,5 +1,7 @@
-import UserDao from "../daos/users.dao.js";
-import UserDTO from "../dtos/user.dto.js";
+const logger = require("../common/logger");
+
+const UserDao = require("../daos/users.dao");
+const UserDTO = require("../dtos/user.dto");
 
 class UserService {
   constructor() {
@@ -7,13 +9,11 @@ class UserService {
   }
 
   async all() {
-    const users = await this.dao.all();
-    return users;
+    return await this.dao.all();
   }
 
   async getById(email) {
-    const user = await this.dao.findByEmail(email);
-    return user;
+    return await this.dao.findByEmail(email);
   }
 
   async create(data) {
@@ -26,7 +26,7 @@ class UserService {
       // Errors are here
       return userDto;
     } catch (err) {
-      console.log(err.code);
+      logger.error(err.message);
       if (err.code === 11000) {
         throw new Error("Email exists yet");
       }
@@ -36,8 +36,7 @@ class UserService {
 
   async update(id, changes) {
     // TODO: Añadir DTO para validacion de changes
-    const userUpdated = await this.dao.update(id, changes);
-    return userUpdated;
+    return this.dao.update(id, changes);
   }
 
   async remove(id) {
@@ -45,4 +44,4 @@ class UserService {
   }
 }
 
-export default new UserService();
+module.exports = new UserService();

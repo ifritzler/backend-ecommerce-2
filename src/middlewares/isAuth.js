@@ -1,9 +1,8 @@
-import { urlencoded } from "express";
-
-export function isAuth(req, res, next) {
+function isAuth(req, res, next) {
   const authenticated = req.session.user;
   if (!authenticated) {
-    return res.redirect("/login?next=" + req.url);
+    return res.redirect(`/login?next=${req.url}`);
   }
-  next();
+  return next();
 }
+module.exports = isAuth;

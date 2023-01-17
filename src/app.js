@@ -1,17 +1,18 @@
-import cors from "cors";
-import dotenv from "dotenv";
-import express from "express";
-import http from "http";
-import { ejsConfig } from "./common/ejs.config.js";
-import routes from "./routes/index.js";
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import errorHandler from "./middlewares/errorHandler.js";
-import morgan from "morgan";
+const cors = require("cors");
+const dotenv = require("dotenv");
+const express = require("express");
+const http = require("http");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const morgan = require("morgan");
+const ejsConfig = require("./common/ejs.config");
+const routes = require("./routes/index");
+const errorHandler = require("./middlewares/errorHandler");
+const { mongoUri } = require("./services/mongo.service");
 
 dotenv.config();
 
-const { COOKIES_SECRET, MONGO_CONNECTURI } = process.env;
+const { COOKIES_SECRET } = process.env;
 
 const app = express();
 app.use(morgan("dev", {}));
@@ -26,10 +27,9 @@ app.use(
   session({
     secret: COOKIES_SECRET,
     store: MongoStore.create({
-      mongoUrl: MONGO_CONNECTURI,
+      mongoUrl: mongoUri,
       ttl: 60,
       stringify: true,
-      dbName: "ecommerce",
     }),
     saveUninitialized: false,
     resave: true,
@@ -40,13 +40,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(routes);
 
-app.get("/helth", (_req, res) => {
+app.get("/health", (_req, res) => {
   res.status(200).json({
-    mongouri: process.env.MONGO_CONNECTIONURI,
+    mongouri: mongoUri,
     port: process.env.PORT,
   });
 });
 
 app.use(errorHandler);
 
-export { app, server };
+module.exports = { app, server };

@@ -1,20 +1,19 @@
-import mongoose from "mongoose";
-import { DoesNotExistsError, NotValidUuidError } from "../common/errors.js";
+const mongoose = require("mongoose");
+const { NotValidUuidError } = require("../common/errors");
 
-export class ContainerMongo {
+class ContainerMongo {
   constructor(collectionName, collectionSchema) {
     this.model = mongoose.model(collectionName, collectionSchema);
   }
 
   async all() {
-    const entities = await this.model.find({});
-    return entities;
+    return this.model.find({});
   }
 
   async getById(id) {
     try {
       const found = await this.model.findById(id);
-      if (!found) throw new DoesNotExistsError();
+      if (!found) return false;
       return found;
     } catch (error) {
       throw new NotValidUuidError(id);
@@ -22,8 +21,7 @@ export class ContainerMongo {
   }
 
   async create(data) {
-    const newEntity = await this.model.create(data);
-    return newEntity;
+    return this.model.create(data);
   }
 
   async update(id, changes) {
@@ -31,7 +29,7 @@ export class ContainerMongo {
       const updated = this.model.findByIdAndUpdate(id, changes, {
         new: "true",
       });
-      if (!updated) throw new DoesNotExistsError();
+      if (!updated) return false;
       return updated;
     } catch (error) {
       throw new NotValidUuidError(id);
@@ -41,6 +39,10 @@ export class ContainerMongo {
   async remove(id) {
     try {
       await this.model.findByIdAndDelete(id);
-    } catch (err) {}
+    } catch (err) {
+      throw new NotValidUuidError(id);
+    }
   }
 }
+
+module.exports = ContainerMongo;
