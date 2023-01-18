@@ -1,7 +1,7 @@
-const logger = require("../common/logger");
+const logger = require("../../common/logger");
 
-const UserDao = require("../daos/users.dao");
-const UserDTO = require("../dtos/user.dto");
+const UserDao = require("../../daos/users.dao");
+const UserDTO = require("../../dtos/user.dto");
 
 class UserService {
   constructor() {
@@ -9,11 +9,11 @@ class UserService {
   }
 
   async all() {
-    return await this.dao.all();
+    return this.dao.all();
   }
 
   async getById(email) {
-    return await this.dao.findByEmail(email);
+    return this.dao.findByEmail(email);
   }
 
   async create(data) {

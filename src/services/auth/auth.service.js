@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
-const userService = require("./user.service");
+const userService = require("../users/user.service");
+const ApplicationError = require('../../common/errors/ApplicationError');
+const AuthError = require("./errors");
 
 class AuthService {
   constructor() {
@@ -10,7 +12,7 @@ class AuthService {
     const user = await this.userService.getById(email);
     if (!user) return false;
     const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) return false;
+    if (!isValidPassword) throw new ApplicationError(AuthError.AUTH_INVALID_CREDENTIALS);
 
     return user;
   }

@@ -1,12 +1,13 @@
 const { Router } = require("express");
 const _ = require("lodash");
 const HttpError = require("../common/http.errors");
-const authService = require("../services/auth.service");
-const userService = require("../services/user.service");
+const authService = require("../services/auth/auth.service");
+const userService = require("../services/users/user.service");
+const passport = require("passport");
 
 const router = Router();
 
-router.post("/login", async (req, res, next) => {
+router.post("/login", passport.authenticate('local', {failureFlash: true}) ,async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -14,16 +15,15 @@ router.post("/login", async (req, res, next) => {
 
     const logedIn = await authService.login(email, password);
     if (!logedIn) {
-      return next(new HttpError("Credenciales incorrectas.", 401, [
-        "email",
-        "password",
-      ]))
+      return next(
+        new HttpError("Credenciales incorrectas.", 401, ["email", "password"])
+      );
     }
 
     req.session.user = logedIn;
-    res.status(301).redirect(nextUrl);
+    return res.status(301).redirect(nextUrl);
   } catch (err) {
-    next(err);
+    return next(err);
   }
 });
 
@@ -32,7 +32,7 @@ router.post("/register", async (req, res, next) => {
     const data = req.body;
     const user = await userService.create(data);
     if (!_.isEmpty(user.errors)) {
-      return next(new HttpError("Bad request", 200, user.errors))
+      return next(new HttpError("Bad request", 200, user.errors));
     }
 
     return res.status(201).json({
@@ -42,14 +42,14 @@ router.post("/register", async (req, res, next) => {
     });
   } catch (err) {
     if (err.message === "Email exists yet") {
-      next(
+      return next(
         new HttpError("Email has been exists", 400, [
           ["email", "Email has been exists"],
         ])
       );
     }
 
-    next(err);
+    return next(err);
   }
 });
 

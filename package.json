@@ -16,16 +16,18 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.8.3",
     "morgan": "^1.10.0",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "winston": "^3.8.2"
   },
   "scripts": {
     "docker:start": "docker compose up",
     "tw:run": "npx tailwindcss -i ./public/input.css -o ./public/output.css --minify",
     "tw:dev": "npx tailwindcss -i ./public/input.css -o ./public/output.css --watch",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "format": "prettier-eslint \"$PWD/{,!(node_modules)/**/}*.{js,json}\"",
     "format:fix": "prettier-eslint --write \"$PWD/{,!(node_modules)/**/}*.{js,json}\"",
+    "lint": "eslint .",
+    "lint:fix": "npm run format:fix && eslint . --fix",
     "start": "set NODE_ENV=production && npm run lint:fix && node .",
     "dev": "set NODE_ENV=development && nodemon ."
   },
@@ -38,10 +40,23 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.3",
     "prettier-eslint-cli": "^7.1.0",
     "prettier-plugin-tailwindcss": "^0.2.1",
     "tailwindcss": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint:fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }

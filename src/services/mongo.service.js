@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 const mongoConfig = require("../common/mongoConfig");
 const logger = require("../common/logger");
+
+dotenv.config();
 
 const {
   NODE_ENV,
@@ -24,7 +27,7 @@ if (NODE_ENV === "development") {
 async function connectMongo() {
   try {
     mongoose.set("strictQuery", true);
-    await mongoose.connect(MONGO_CONNECT_URI, mongoConfig);
+    await mongoose.connect(mongoUri, mongoConfig);
     logger.info("Mongo database is connected.");
   } catch (err) {
     logger.error(err.message);

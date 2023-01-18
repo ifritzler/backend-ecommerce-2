@@ -9,6 +9,8 @@ const ejsConfig = require("./common/ejs.config");
 const routes = require("./routes/index");
 const errorHandler = require("./middlewares/errorHandler");
 const { mongoUri } = require("./services/mongo.service");
+const passportConfig = require("./common/passport");
+const passport = require('passport');
 
 dotenv.config();
 
@@ -23,6 +25,8 @@ ejsConfig(app);
 app.use(cors({ origin: ["*"] }));
 app.use(express.json());
 
+passportConfig();
+
 app.use(
   session({
     secret: COOKIES_SECRET,
@@ -35,6 +39,9 @@ app.use(
     resave: true,
   })
 );
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));

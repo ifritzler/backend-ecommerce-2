@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { NotValidUuidError } = require("../common/errors");
+const createError = require("../common/errors/createError");
 
 class ContainerMongo {
   constructor(collectionName, collectionSchema) {
@@ -7,16 +8,18 @@ class ContainerMongo {
   }
 
   async all() {
-    return this.model.find({});
+    try {
+      return this.model.find({});
+    }catch (e) {
+      throw createError(e);
+    }
   }
 
   async getById(id) {
     try {
-      const found = await this.model.findById(id);
-      if (!found) return false;
-      return found;
+      return this.model.findById(id);
     } catch (error) {
-      throw new NotValidUuidError(id);
+      throw createError(error);
     }
   }
 
@@ -26,13 +29,12 @@ class ContainerMongo {
 
   async update(id, changes) {
     try {
-      const updated = this.model.findByIdAndUpdate(id, changes, {
+      const found = await this.model.findById(id);
+      return this.model.findByIdAndUpdate(id, changes, {
         new: "true",
       });
-      if (!updated) return false;
-      return updated;
-    } catch (error) {
-      throw new NotValidUuidError(id);
+    } catch (e) {
+      throw new createError(e);
     }
   }
 
@@ -40,7 +42,7 @@ class ContainerMongo {
     try {
       await this.model.findByIdAndDelete(id);
     } catch (err) {
-      throw new NotValidUuidError(id);
+      throw new createError(err);
     }
   }
 }
