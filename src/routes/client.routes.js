@@ -1,9 +1,16 @@
-const { Router } = require("express");
+const { Router, json } = require("express");
 const products = require("../common/database");
 const isAdmin = require("../middlewares/isAdmin");
 const isAuth = require("../middlewares/isAuth");
 
 const router = Router();
+var argv = require('minimist')(process.argv.slice(2), {
+  alias: {
+    p: 'port'
+  },
+});
+
+delete argv._
 
 router.get("/", (req, res) => {
   res.render("pages/home", {
@@ -17,6 +24,22 @@ router.get("/nuevo-producto", isAuth, isAdmin, (req, res) => {
   res.render("pages/nuevo-producto", {
     title: "Lookte - Nuevo producto",
     isAuth: req.session.user,
+  });
+});
+
+router.get("/info", (_req, res) => {
+  res.render("pages/info", {
+    title: "Info",
+    info: {
+      args: Object.entries(argv),
+      path: process.execPath,
+      platform: process.platform,
+      processId: process.pid,
+      nodeVersion: process.version,
+      folder: process.cwd(),
+      rss: process.memoryUsage.rss(),
+    },
+    isAuth: false
   });
 });
 

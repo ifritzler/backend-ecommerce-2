@@ -14,6 +14,7 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "lodash": "^4.17.21",
+    "minimist": "^1.2.7",
     "mongoose": "^6.8.3",
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
@@ -28,8 +29,8 @@
     "format:fix": "prettier-eslint --write \"$PWD/{,!(node_modules)/**/}*.{js,json}\"",
     "lint": "eslint .",
     "lint:fix": "npm run format:fix && eslint . --fix",
-    "start": "set NODE_ENV=production && npm run lint:fix && node .",
-    "dev": "set NODE_ENV=development && nodemon ."
+    "start": "set NODE_ENV=production && npm run lint:fix && node . -- -p3000",
+    "dev": "set NODE_ENV=development && nodemon . -- -p3001"
   },
   "keywords": [],
   "author": "",

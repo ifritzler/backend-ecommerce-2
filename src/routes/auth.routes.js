@@ -1,31 +1,35 @@
 const { Router } = require("express");
 const _ = require("lodash");
+const passport = require("passport");
 const HttpError = require("../common/http.errors");
 const authService = require("../services/auth/auth.service");
 const userService = require("../services/users/user.service");
-const passport = require("passport");
 
 const router = Router();
 
-router.post("/login", passport.authenticate('local', {failureFlash: true}) ,async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
+router.post(
+  "/login",
+  passport.authenticate("local", { failureFlash: true }),
+  async (req, res, next) => {
+    try {
+      const { email, password } = req.body;
 
-    const nextUrl = req.query.next || "/";
+      const nextUrl = req.query.next || "/";
 
-    const logedIn = await authService.login(email, password);
-    if (!logedIn) {
-      return next(
-        new HttpError("Credenciales incorrectas.", 401, ["email", "password"])
-      );
+      const logedIn = await authService.login(email, password);
+      if (!logedIn) {
+        return next(
+          new HttpError("Credenciales incorrectas.", 401, ["email", "password"])
+        );
+      }
+
+      req.session.user = logedIn;
+      return res.status(301).redirect(nextUrl);
+    } catch (err) {
+      return next(err);
     }
-
-    req.session.user = logedIn;
-    return res.status(301).redirect(nextUrl);
-  } catch (err) {
-    return next(err);
   }
-});
+);
 
 router.post("/register", async (req, res, next) => {
   try {

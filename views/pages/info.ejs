@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+  <%- include('../head.ejs') %>
+  <body class="min-h-screen w-full">
+    <%- include('../components/navbar.ejs', {isAuth})%>
+    <main
+      class="mx-auto flex w-11/12 flex-col content-center justify-center gap-6 py-6"
+    >
+    <div class="flex flex-col">
+      <div class="flex flex-col gap-4 justify-start">
+        <h3 class="text-lg font-bold">Argumentos de entrada: </h3>
+        <ul>
+          <% info.args.forEach(arg => { %>
+          <li class="flex flex-row gap-4">
+            <h4 class="text-sm font-bold"><%- arg[0] %>:</h4>
+            <p><%- arg[1] %></p>
+          </li>
+          <% }) %>
+        </div>
+      </div>
+      <div class="flex flex-row gap-4 items-center">
+        <h3 class="text-lg font-bold">Path de ejecucion: </h3>
+        <p><%= info.path %> </p>
+      </div>
+      <div class="flex flex-row gap-4 items-center">
+        <h3 class="text-lg font-bold">Nombre de la plataforma: </h3>
+        <p><%= info.platform %> </p>
+      </div>
+      <div class="flex flex-row gap-4 items-center">
+        <h3 class="text-lg font-bold">Process id: </h3>
+        <p><%= info.processId %> </p>
+      </div>
+      <div class="flex flex-row gap-4 items-center">
+        <h3 class="text-lg font-bold">Node Version: </h3>
+        <p><%= info.nodeVersion %> </p>
+      </div>
+      <div class="flex flex-row gap-4 items-center">
+        <h3 class="text-lg font-bold">Project Folder: </h3>
+        <p><%= info.folder %> </p>
+      </div>
+      <div class="flex flex-row gap-4 items-center">
+        <h3 class="text-lg font-bold">Memoria total reservada (rss): </h3>
+        <p><%= info.rss %> </p>
+      </div>
+  </div>
+    </main>
+      
+    <script>
+    </script>
+  </body>
+</html>
